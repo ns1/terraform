@@ -1,6 +1,7 @@
 package ns1
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -314,6 +315,10 @@ func RecordCreate(d *schema.ResourceData, meta interface{}) error {
 	if err := resourceDataToRecord(r, d); err != nil {
 		return err
 	}
+
+	b, _ := json.MarshalIndent(r, "", "  ")
+	log.Printf("[DEBUG] NS1 record PUT: %s \n", string(b))
+
 	if _, err := client.Records.Create(r); err != nil {
 		return err
 	}
